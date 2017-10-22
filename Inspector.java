@@ -44,12 +44,12 @@ public static void inspect(Object obj, boolean recursive) throws Exception
 	
 	
 	
-	System.out.println("Methods in Class:" + '\n');
+	System.out.println("METHODS IN CLASS");
 	Method[] Methods = sentClass.getDeclaredMethods();
 	
 	for(int i = 0; i < (Methods.length); i++)
 	{
-		System.out.print(Methods[i].getName() + " THROWS: ");
+		System.out.print("NAME: " + Methods[i].getName() + " THROWS: ");
 		
 		
 		
@@ -89,6 +89,31 @@ public static void inspect(Object obj, boolean recursive) throws Exception
 	}
 	 
 	
+	System.out.println();
+	
+	
+	
+	System.out.println("CONSTRUCTORS DECLARED BY CLASS: ");
+	Constructor[] constructors = sentClass.getDeclaredConstructors();
+	
+	
+	for(int i = 0; i< constructors.length; i++)
+	{
+		System.out.print("NAME: " + constructors[i].getName());
+		Class[] conparams = constructors[i].getParameterTypes();
+		
+		System.out.print(" PARAMETERS: (");
+		
+		for (int j = 0; j < conparams.length; j++)
+		System.out.print( conparams[j].getSimpleName() + ",");
+		
+		System.out.print(") ");
+		
+		System.out.print("MODIFIER NUMBER: " + constructors[i].getModifiers());
+		System.out.print(" MODIFIER: " + Modifier.toString(constructors[i].getModifiers()));
+		
+		System.out.println('\n');
+	}
 	
 	
 	
@@ -99,19 +124,62 @@ public static void inspect(Object obj, boolean recursive) throws Exception
 	
 	
 	
-	
-	
-	System.out.println("FIELDS DECLARED by Class:");
+	System.out.println("FIELDS DECLARED BY CLASS:");
 	Field []fields = sentClass.getDeclaredFields();
 	
 	
 	for(int i = 0; i< fields.length; i++)
 	{
 		
+		fields[i].setAccessible(true); //otherwise will break
+		
+		
 		System.out.print("NAME: " + fields[i].getName());
-		System.out.print(" TYPE: " + fields[i].getType().toString());
+		
+		if(!fields[i].getType().isPrimitive())  //not primitive
+		{
+			if(fields[i].getType().isArray())
+			{
+				
+				System.out.print(" ARRAY: ");
+				int arraylength = Array.getLength(fields[i].get(obj));
+				System.out.print("ARRAY LENGTH: " + arraylength);
+				
+				
+				for(int j = 0; j < arraylength; j++)
+				{
+					System.out.print(" VALUE AT INDEX: [" + j + "] is " + Array.get(fields[i].get(obj), j));
+					
+				}
+				
+			}
+				
+			else{
+				System.out.print(" NON PRIMITIVE VALUE: " + fields[i].get(obj));
+			}
+			
+			
+			
+		}
+		
+		
+		
+		
+		System.out.print(" TYPE: " + fields[i].getType().getSimpleName());
 		System.out.print(" " + "MODIFIER NUMBER: " + fields[i].getModifiers());
 	    System.out.println(" MODIFIER: " + Modifier.toString(fields[i].getModifiers()));
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	}
 	
 	
