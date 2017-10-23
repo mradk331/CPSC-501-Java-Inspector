@@ -9,7 +9,7 @@ public class Inspector {
 	public static void main (String args[])
 	{
        try {
-		inspect(new ClassD(), true);
+		inspect(new ClassB(), true);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -29,29 +29,29 @@ public static void inspect(Object obj, boolean recursive) throws Exception
 	 classInfo(sentClass);
 	 methodInfo(sentClass);
 	 constructorInfo(sentClass);
-	 fieldInfo(sentClass, obj);
-	  
+	 fieldInfo(sentClass, obj, recursive);
+	 if( recursive)
+		 traverse(sentClass, obj, recursive);
 	 
 	 
+}	 
 	 
-	 
-	 
-	 
+	 //returns the class at the end of the hierarchy. the parent class of all
+public static String traverse(Class <?> sentClass, Object obj, boolean recursive) throws Exception
+{
 	 
 
 
 	
 	
 	
-	if(recursive)
-	{
 
 	Class <?> superClass =  sentClass.getSuperclass();
 		
 	
-	Class temp;
+	Class <?> temp;
 	
-		while (superClass != null && superClass.getSuperclass() != null )
+		while (superClass != null && superClass.getSuperclass() != null )  //object -> class
 		{
 			//System.out.println("KILLLLLLLLLLLLLLLL");
 		 System.out.println("SUPERCLASS: " + superClass.getName());
@@ -60,22 +60,19 @@ public static void inspect(Object obj, boolean recursive) throws Exception
 		 classInfo(superClass);
 		 methodInfo(superClass);
 		 constructorInfo(superClass);
-		 fieldInfo(superClass, obj);
+		 fieldInfo(superClass, obj, recursive);
 		 
 		 temp = superClass.getSuperclass();
 		 superClass = temp;
-		 
-		 
-		}
+		 	
+	    }
+	return superClass.getName();
 		
-		
-	}
-	
 	
 }	
 
 
-public static void classInfo(Class sentClass) throws Exception
+public static String classInfo(Class sentClass) throws Exception
 {	
 	System.out.println("Class Name:");
 	System.out.println(sentClass.getSimpleName() + '\n');
@@ -92,11 +89,12 @@ public static void classInfo(Class sentClass) throws Exception
 	}
 	System.out.println();		
 
+	return sentClass.getSimpleName();
 }	
 
 
-
-public static void methodInfo(Class sentClass) throws Exception
+//returns number of methods
+public static int methodInfo(Class sentClass) throws Exception
 {
 	
 	System.out.println("METHODS IN CLASS");
@@ -145,11 +143,11 @@ public static void methodInfo(Class sentClass) throws Exception
 	 
 	
 	System.out.println();
-	
+	return Methods.length;
 }	
 
-
-public static void constructorInfo( Class sentClass) throws Exception
+//return number of consrtuctors
+public static int constructorInfo( Class sentClass) throws Exception
 {
 	System.out.println("CONSTRUCTORS DECLARED BY CLASS: ");
 	Constructor[] constructors = sentClass.getDeclaredConstructors();
@@ -173,13 +171,15 @@ public static void constructorInfo( Class sentClass) throws Exception
 		System.out.println('\n');
 	}
 	
+	return constructors.length;
+	
 }	
 	
 
 
+//returns number of fields
 
-
-public static void fieldInfo (Class sentClass, Object obj) throws Exception
+public static int fieldInfo (Class sentClass, Object obj, boolean recursive) throws Exception
 {
 System.out.println("FIELDS DECLARED BY CLASS:");
 Field []fields = sentClass.getDeclaredFields();
@@ -254,17 +254,20 @@ for(int i = 0; i< fields.length; i++)
 		}
 	
 	
-	
 	System.out.print(" TYPE: " + fields[i].getType().getSimpleName());
 	System.out.print(" " + "MODIFIER NUMBER: " + fields[i].getModifiers());
-    System.out.println(" MODIFIER: " + Modifier.toString(fields[i].getModifiers()));
-
-
+    System.out.print(" MODIFIER: " + Modifier.toString(fields[i].getModifiers()));
+    
+    if(!recursive)
+    System.out.println(" REFERENCE VALUE: (" + fields[i].hashCode() + ", " + obj.toString() + ") ");
+    System.out.println();
 
 
 }
 System.out.println();
 
+
+return fields.length;
 }	
 
 
