@@ -11,4 +11,6 @@ public class ClassD
     private static ClassA val2;
     private int val3=34;
     private ClassA[] vallarray = new ClassA[10];
+    
+    private char gee = 'g';
 }

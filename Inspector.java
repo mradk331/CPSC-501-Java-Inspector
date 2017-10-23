@@ -9,7 +9,7 @@ public class Inspector {
 	public static void main (String args[])
 	{
        try {
-		inspect(new ClassB(), false);
+		inspect(new ClassD(), true);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -22,10 +22,61 @@ public class Inspector {
 	
 public static void inspect(Object obj, boolean recursive) throws Exception
 {
-	
+	 if(obj == null )  //base case
+		 return;
 
-	Class sentClass = obj.getClass();
+	 Class <?> sentClass = obj.getClass(); 
+	 classInfo(sentClass);
+	 methodInfo(sentClass);
+	 constructorInfo(sentClass);
+	 fieldInfo(sentClass, obj);
+	  
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+
+
 	
+	
+	
+	if(recursive)
+	{
+
+	Class <?> superClass =  sentClass.getSuperclass();
+		
+	
+	Class temp;
+	
+		while (superClass != null && superClass.getSuperclass() != null )
+		{
+			//System.out.println("KILLLLLLLLLLLLLLLL");
+		 System.out.println("SUPERCLASS: " + superClass.getName());
+		 
+		 
+		 classInfo(superClass);
+		 methodInfo(superClass);
+		 constructorInfo(superClass);
+		 fieldInfo(superClass, obj);
+		 
+		 temp = superClass.getSuperclass();
+		 superClass = temp;
+		 
+		 
+		}
+		
+		
+	}
+	
+	
+}	
+
+
+public static void classInfo(Class sentClass) throws Exception
+{	
 	System.out.println("Class Name:");
 	System.out.println(sentClass.getSimpleName() + '\n');
 	System.out.println("SuperClass Name:");
@@ -41,8 +92,12 @@ public static void inspect(Object obj, boolean recursive) throws Exception
 	}
 	System.out.println();		
 
-	
-	
+}	
+
+
+
+public static void methodInfo(Class sentClass) throws Exception
+{
 	
 	System.out.println("METHODS IN CLASS");
 	Method[] Methods = sentClass.getDeclaredMethods();
@@ -91,8 +146,11 @@ public static void inspect(Object obj, boolean recursive) throws Exception
 	
 	System.out.println();
 	
-	
-	
+}	
+
+
+public static void constructorInfo( Class sentClass) throws Exception
+{
 	System.out.println("CONSTRUCTORS DECLARED BY CLASS: ");
 	Constructor[] constructors = sentClass.getDeclaredConstructors();
 	
@@ -115,75 +173,106 @@ public static void inspect(Object obj, boolean recursive) throws Exception
 		System.out.println('\n');
 	}
 	
+}	
+	
+
+
+
+
+public static void fieldInfo (Class sentClass, Object obj) throws Exception
+{
+System.out.println("FIELDS DECLARED BY CLASS:");
+Field []fields = sentClass.getDeclaredFields();
+
+
+for(int i = 0; i< fields.length; i++)
+{
+	
+	fields[i].setAccessible(true); //otherwise will break
 	
 	
+	System.out.print("NAME: " + fields[i].getName());
 	
-	
-	
-	
-	
-	
-	
-	System.out.println("FIELDS DECLARED BY CLASS:");
-	Field []fields = sentClass.getDeclaredFields();
-	
-	
-	for(int i = 0; i< fields.length; i++)
+	if(!fields[i].getType().isPrimitive())  //not primitive
 	{
-		
-		fields[i].setAccessible(true); //otherwise will break
-		
-		
-		System.out.print("NAME: " + fields[i].getName());
-		
-		if(!fields[i].getType().isPrimitive())  //not primitive
+		if(fields[i].getType().isArray())
 		{
-			if(fields[i].getType().isArray())
+			
+			System.out.print(" ARRAY: ");
+			int arraylength = Array.getLength(fields[i].get(obj));
+			System.out.print("ARRAY LENGTH: " + arraylength);
+			
+			
+			for(int j = 0; j < arraylength; j++)
 			{
-				
-				System.out.print(" ARRAY: ");
-				int arraylength = Array.getLength(fields[i].get(obj));
-				System.out.print("ARRAY LENGTH: " + arraylength);
-				
-				
-				for(int j = 0; j < arraylength; j++)
-				{
-					System.out.print(" VALUE AT INDEX: [" + j + "] is " + Array.get(fields[i].get(obj), j));
-					
-				}
+				System.out.print(" VALUE AT INDEX: [" + j + "] is " + Array.get(fields[i].get(obj), j));
 				
 			}
-				
-			else{
-				System.out.print(" NON PRIMITIVE VALUE: " + fields[i].get(obj));
-			}
 			
+		}
 			
-			
+		else{
+			System.out.print(" NON PRIMITIVE VALUE: " + fields[i].get(obj));   //should work recursively using obj please
 		}
 		
 		
 		
-		
-		System.out.print(" TYPE: " + fields[i].getType().getSimpleName());
-		System.out.print(" " + "MODIFIER NUMBER: " + fields[i].getModifiers());
-	    System.out.println(" MODIFIER: " + Modifier.toString(fields[i].getModifiers()));
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	}
+	else 
+		
+		
+		{
+		//extremely repetitive, handles each of the primitive types
+		 if(fields[i].getType().getName() == "int")		
+		System.out.print(" PRIMITIVE VALUE: " + fields[i].getInt(obj));
+		 
+		 
+		 if(fields[i].getType().getName() == "char")		
+				System.out.print(" PRIMITIVE VALUE: " + fields[i].getChar(obj));
+		 
+		 if(fields[i].getType().getName() == "boolean")		
+				System.out.print(" PRIMITIVE VALUE: " + fields[i].getBoolean(obj));
+		 
+		 
+		 if(fields[i].getType().getName() == "byte")		
+				System.out.print(" PRIMITIVE VALUE: " + fields[i].getByte(obj));
+		 
+		 if(fields[i].getType().getName() == "short")		
+				System.out.print(" PRIMITIVE VALUE: " + fields[i].getShort(obj));
+		 
+		 if(fields[i].getType().getName() == "long")		
+				System.out.print(" PRIMITIVE VALUE: " + fields[i].getLong(obj));
+		 
+		 
+		 
+		 if(fields[i].getType().getName() == "double")		
+				System.out.print(" PRIMITIVE VALUE: " + fields[i].getDouble(obj));
+		 
+		 
+		 if(fields[i].getType().getName() == "float")		
+				System.out.print(" PRIMITIVE VALUE: " + fields[i].getFloat(obj));
+		}
 	
 	
 	
+	System.out.print(" TYPE: " + fields[i].getType().getSimpleName());
+	System.out.print(" " + "MODIFIER NUMBER: " + fields[i].getModifiers());
+    System.out.println(" MODIFIER: " + Modifier.toString(fields[i].getModifiers()));
+
+
+
+
+}
+System.out.println();
+
 }	
-	
+
+
+
+
+
+
+
+
+
 }
