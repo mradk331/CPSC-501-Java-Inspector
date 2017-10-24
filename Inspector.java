@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Inspector {
 
+	/*
 	public static void main (String args[])
 	{
        try {
@@ -16,7 +17,7 @@ public class Inspector {
 	}		
 		
 	}
-
+*/
 	
 	
 	
@@ -54,7 +55,7 @@ public static String traverse(Class <?> sentClass, Object obj, boolean recursive
 		while (superClass != null && superClass.getSuperclass() != null )  //object -> class
 		{
 			//System.out.println("KILLLLLLLLLLLLLLLL");
-		 System.out.println("SUPERCLASS: " + superClass.getName());
+		 System.out.println("TRAVERSING SUPERCLASS: " + superClass.getName());
 		 
 		 
 		 classInfo(superClass);
