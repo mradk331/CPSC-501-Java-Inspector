@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Inspector {
 
-	/*
+	
 	public static void main (String args[])
 	{
        try {
@@ -17,7 +17,7 @@ public class Inspector {
 	}		
 		
 	}
-*/
+
 	
 	
 	
@@ -38,7 +38,7 @@ public static void inspect(Object obj, boolean recursive) throws Exception
 }	 
 	 
 	 //returns the class at the end of the hierarchy. the parent class of all
-public static String traverse(Class <?> sentClass, Object obj, boolean recursive) throws Exception
+public static void traverse(Class <?> sentClass, Object obj, boolean recursive) throws Exception
 {
 	 
 
@@ -52,8 +52,9 @@ public static String traverse(Class <?> sentClass, Object obj, boolean recursive
 	
 	Class <?> temp;
 	
-		while (superClass != null && superClass.getSuperclass() != null )  //object -> class
-		{
+		//while (superClass != null && superClass.getSuperclass() != null )  //object -> class
+	while(superClass != null)	
+	{
 			//System.out.println("KILLLLLLLLLLLLLLLL");
 		 System.out.println("TRAVERSING SUPERCLASS: " + superClass.getName());
 		 
@@ -67,8 +68,7 @@ public static String traverse(Class <?> sentClass, Object obj, boolean recursive
 		 superClass = temp;
 		 	
 	    }
-	return superClass.getName();
-		
+
 	
 }	
 
@@ -78,6 +78,8 @@ public static String classInfo(Class sentClass) throws Exception
 	System.out.println("Class Name:");
 	System.out.println(sentClass.getSimpleName() + '\n');
 	System.out.println("SuperClass Name:");
+	
+	if(sentClass.getSuperclass() != null)
 	System.out.println(sentClass.getSuperclass().getSimpleName()+ '\n');
 	System.out.println("Interfaces implemented:");
 	

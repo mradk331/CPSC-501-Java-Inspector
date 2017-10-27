@@ -1,0 +1,16 @@
+Refactorings:
+Used extract Method to breakup classes. Resulted in 5 classes: fieldInfo(), constructorInfo(), methodInfo(), classInfo(), traverse(), and inspect().
+Rename fields also used to change the name of some fields.
+
+Version Control:
+
+git log --oneline
+24f594f forgot classpath
+ddac40d working test cases, output slightly changed
+b6cb7f8 looks good, refactored recursive method using extract Method, and gave functions a return value to be used for testing.
+54520c7 looks good, refactored using extractMethod for 4 separate methods
+dcc27a7 seems to be good except recursion
+1118c10 modifiers and fields seem to work, no arrays yet
+505cdcf class information seems to be working
+d815a64 initial, added driver
+
