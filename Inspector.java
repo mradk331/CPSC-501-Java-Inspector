@@ -100,7 +100,7 @@ public static String classInfo(Class sentClass) throws Exception
 public static int methodInfo(Class sentClass) throws Exception
 {
 	
-	System.out.println("METHODS IN CLASS");
+	System.out.println("METHODS IN CLASS: ");
 	Method[] Methods = sentClass.getDeclaredMethods();
 	
 	for(int i = 0; i < (Methods.length); i++)
@@ -171,9 +171,9 @@ public static int constructorInfo( Class sentClass) throws Exception
 		System.out.print("MODIFIER NUMBER: " + constructors[i].getModifiers());
 		System.out.print(" MODIFIER: " + Modifier.toString(constructors[i].getModifiers()));
 		
-		System.out.println('\n');
+		System.out.println();
 	}
-	
+	System.out.println('\n');
 	return constructors.length;
 	
 }	
